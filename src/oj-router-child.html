@@ -1,0 +1,104 @@
+<script type="text/javascript" src="../node_modules/requirejs/require.js"></script>
+<script type="text/javascript" src="main.js"></script>
+
+<link rel="stylesheet" href="../node_modules/@oracle/oraclejet/dist/css/alta/oj-alta.css">
+
+<style type="text/css">
+.square { width: 100px; height: 100px; }
+.circle { width: 100px; height: 100px;
+          -moz-border-radius: 50px;
+          -webkit-border-radius: 50px;
+          border-radius: 50px; }
+.oval   { width: 200px; height: 100px;
+          -moz-border-radius: 100px / 50px;
+          -webkit-border-radius: 100px / 50px;
+          border-radius: 100px / 50px; }
+.oj-menu-dropdown .oj-menu-item > a {
+  height: 35px !important;
+}
+</style>
+
+<h3>Router Child Example</h3>
+
+    
+<div id="componentDemoContent" style="width: 1px; min-width: 100%;">
+  <div id="routing-container">
+    <oj-toolbar id='buttons-container'>
+      <oj-buttonset-one class="oj-buttonset-width-auto" value="{{shapeRouter.stateId}}" focus-management="none">
+        <!-- ko foreach: shapeRouter.states -->
+        <oj-option value="[[id]]">
+          <span data-bind="text: label"></span>
+        </oj-option>
+        <!-- /ko -->
+      </oj-buttonset-one>
+      <oj-menu-button id="menuButton">
+        Go to
+        <oj-menu id="gotoMenu" slot="menu" style="display:none" on-oj-action="[[menuItemAction]]">
+          <!-- ko foreach: shapeRouter.states -->
+            <!-- ko foreach: $root.colorRouter.states -->
+            <oj-option value="[['/' + $parent.id + '/' + id]]">
+              <span data-bind="text: '/' + $parent.id + '/' + id"></span>
+            </oj-option>
+            <!-- /ko -->
+          <!-- /ko -->
+        </oj-menu>
+      </oj-menu-button>
+    </oj-toolbar>
+  
+    <hr/>
+    <div id="pageContent" class="oj-flex oj-flex-items-pad">
+      <div class="oj-xl-2 oj-lg-2 oj-md-2 oj-sm-12 oj-flex-item">
+        <oj-navigation-list id="colors" class="oj-navigationlist-stack-icon-label" drill-mode="none" selection="{{colorRouter.stateId}}">
+          <ul data-bind="foreach: colorRouter.states">
+            <li data-bind="attr: {id: id}">
+              <a data-bind="text: label"></a>
+            </li>
+          </ul>
+        </oj-navigation-list>
+      </div>
+      <div class="oj-xl-10 oj-md-10 oj-sm-12 oj-flex-item">
+         <div data-bind="css: shapeRouter.stateId(),
+                         style: { background: colorRouter.stateId() }">
+         </div>
+      </div>
+    </div>
+  </div>
+
+  
+</div>
+
+<script type="text/javascript">
+  require(['ojs/ojcore', 'knockout', 'jquery',
+  'ojs/ojknockout', 'ojs/ojtoolbar',
+  'ojs/ojbutton', 'ojs/ojnavigationlist', 'ojs/ojrouter'], function(oj, ko, $) {
+    var shapeRouter = oj.Router.rootInstance;
+    shapeRouter.configure({
+      'square': { label: 'Square', isDefault: true },
+      'circle': { label: 'Circle' },
+      'oval':   { label: 'Oval'   }
+    });
+
+    // Create and configure the child router to be used for colors
+    var colorRouter = shapeRouter.createChildRouter('color').
+      configure({
+        'red':   { label: 'Red',  isDefault: true },
+        'blue':  { label: 'Blue'  },
+        'green': { label: 'Green' }
+      });
+
+    var viewModel = {
+      shapeRouter: shapeRouter,
+      colorRouter: colorRouter,
+      menuItemAction: function(event) {
+        // Invoke go() with the path of the destination state
+        viewModel.shapeRouter.go(event.target.value);
+      }
+    };
+
+    viewModel.shapeRouter.stateId('square');
+    ko.applyBindings(viewModel, document.getElementById('routing-container'));
+    setTimeout(() => {
+      oj.Router.sync();
+    });
+  });
+</script>

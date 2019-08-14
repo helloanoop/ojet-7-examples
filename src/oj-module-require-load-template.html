@@ -1,0 +1,35 @@
+<script type="text/javascript" src="../node_modules/requirejs/require.js"></script>
+<script type="text/javascript" src="main.js"></script>
+
+<link rel="stylesheet" href="../node_modules/@oracle/oraclejet/dist/css/alta/oj-alta.css">
+
+<h3>ojModule - Require Load (With View Model)</h3>
+
+<oj-buttonset-one class="oj-buttonset-width-auto" value="{{currentModule}}">
+  <oj-option value="first">View One</oj-option>
+  <oj-option value="second">View Two</oj-option>
+</oj-buttonset-one>
+
+<div data-bind="ojModule: moduleOptions">
+</div>
+
+<script type="text/javascript">
+  require(['ojs/ojcore', 'knockout', 'jquery',
+  'ojs/ojknockout', 'ojs/ojmodule', 'ojs/ojbutton'], function(oj, ko, $) {
+    function RequireLoadModuleModel() {
+      let self = this;
+      this.currentModule = ko.observable("second");
+
+      this.moduleOptions = ko.computed(function() {
+        let moduleOptions = {
+          name: `oj-module-require-load/${self.currentModule()}`,
+          viewModel: {
+          }
+        };
+
+        return moduleOptions;
+      });
+    }
+    ko.applyBindings(new RequireLoadModuleModel());
+  });
+</script>

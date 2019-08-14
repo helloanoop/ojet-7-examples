@@ -1,0 +1,44 @@
+<script type="text/javascript" src="../node_modules/requirejs/require.js"></script>
+<script type="text/javascript" src="main.js"></script>
+
+<link rel="stylesheet" href="../node_modules/@oracle/oraclejet/dist/css/alta/oj-alta.css">
+
+<h3>Router Simple Example</h3>
+
+<div id="routing-container">
+  <oj-toolbar id='buttons-container'>
+    <oj-buttonset-one class="oj-buttonset-width-auto" value="{{router.stateId}}" focus-management="none">
+      <!-- ko foreach: router.states -->
+      <oj-option value="[[id]]">
+        <span data-bind="text: label"></span>
+      </oj-option>
+      <!-- /ko -->
+    </oj-buttonset-one>
+  </oj-toolbar>
+  <hr/>
+  <div id="pageContent" class="oj-panel oj-panel-alt2"
+       style="width: 200px">
+    <h3 data-bind="text: router.currentValue"></h3>
+  </div>
+</div>
+
+<script type="text/javascript">
+  require(['ojs/ojcore', 'knockout', 'jquery',
+  'ojs/ojknockout',
+  'ojs/ojtoolbar', 'ojs/ojbutton', 'ojs/ojrouter'], function(oj, ko, $) {
+    var router = oj.Router.rootInstance;
+
+    router.configure({
+      'pref':  { label: 'Preface',   value: 'This is the Preface.',
+                 isDefault: true },
+      'chap1': { label: 'Chapter 1', value: 'This is Chapter 1.' },
+      'chap2': { label: 'Chapter 2', value: 'This is Chapter 2.' },
+      'chap3': { label: 'Chapter 3', value: 'This is Chapter 3.' }
+    });
+    router.stateId('pref');
+
+    ko.applyBindings({
+      router: router
+    }, document.getElementById('routing-container'));
+  });
+</script>

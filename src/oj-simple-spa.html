@@ -1,0 +1,54 @@
+<script type="text/javascript" src="../node_modules/requirejs/require.js"></script>
+<script type="text/javascript" src="main.js"></script>
+
+<link rel="stylesheet" href="../node_modules/@oracle/oraclejet/dist/css/alta/oj-alta.css">
+
+<h3>Router with ojModule</h3>
+
+<div id="routing-container">
+  <oj-toolbar id='buttons-container'>
+    <oj-buttonset-one class="oj-buttonset-width-auto" value="{{router.stateId}}" focus-management="none">
+      <!-- ko foreach: router.states -->
+      <oj-option value="[[id]]">
+        <span data-bind="text: label"></span>
+      </oj-option>
+      <!-- /ko -->
+    </oj-buttonset-one>
+  </oj-toolbar>
+  <hr/>
+  <div id="pageContent" class="oj-panel oj-panel-alt2"
+       style="width: 200px">
+    <div id="content" data-bind="ojModule: router.moduleConfig"></div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  require(['ojs/ojcore', 'knockout', 'jquery',
+  'ojs/ojknockout',
+  'ojs/ojtoolbar', 'ojs/ojbutton', 'ojs/ojrouter',
+  'ojs/ojmodule', 'ojs/ojmoduleanimations', 'text'], function(oj, ko, $) {
+    var router = oj.Router.rootInstance;
+
+    oj.ModuleBinding.defaults.modelPath = 'src/viewModels/oj-router/';
+    oj.ModuleBinding.defaults.viewPath = 'text!src/views/oj-router/';
+
+    oj.Router.defaults['urlAdapter'] = new oj.Router.urlPathAdapter();
+
+    router.configure({
+      'chap1':  { label: 'Chapter 1', value: 'chapter-1',
+                 isDefault: true },
+      'chap2': { label: 'Chapter 2', value: 'chapter-2'}
+    });
+    router.stateId('chap1');
+
+    var viewModel = {
+      router: router
+    };
+
+    ko.applyBindings(viewModel, document.getElementById('routing-container'));
+    
+    setTimeout(() => {
+      oj.Router.sync();
+    });
+  });
+</script>

@@ -1,0 +1,18 @@
+{
+  "name": "ojet-starter",
+  "version": "1.0.0",
+  "description": "Oracle JavaScript Extension Toolkit(JET) Starter Kit",
+  "dependencies": {
+    "@oracle/oraclejet": "~7.1.0",
+    "lodash": "^4.17.5"
+  },
+  "scripts": {
+    "start": "./node_modules/.bin/http-server"
+  },
+  "devDependencies": {
+    "body-parser": "^1.9.0",
+    "cors": "^2.4.2",
+    "express": "^4.9.7",
+    "http-server": "^0.11.1"
+  }
+}
