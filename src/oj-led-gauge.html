@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <title>OJET v5 Starter Kit</title>
+    <link rel="stylesheet" href="../node_modules/@oracle/oraclejet/dist/css/alta/oj-alta.css">
+
+    <script type="text/javascript" src="../node_modules/requirejs/require.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+  </head>
+
+  <body>
+    <table>
+      <tr>
+        <td>
+          <h2>Default with no label:</h2>
+        </td>
+        <td>
+          <oj-led-gauge
+            value="{{midValue}}"
+            style="float:left;width:40px;height:40px;">
+          </oj-led-gauge>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <h2>Default with label:</h2>
+        </td>
+        <td>
+          <oj-led-gauge id="gauge1" value="{{lowValue}}"
+                        metric-label.rendered="on"
+                        metric-label.style='{"color":"yellow"}'
+                        style="float:left;width:40px;height:40px;"></oj-led-gauge>
+          <oj-led-gauge id="gauge2" value="{{midValue}}"
+                        metric-label.rendered="on"
+                        metric-label.text-type="percent"
+                        metric-label.style='{"color":"lime"}'
+                        style="float:left;width:40px;height:40px;"></oj-led-gauge>
+          <oj-led-gauge id="gauge3" value="{{highValue}}"
+                        metric-label.rendered="on"
+                        metric-label.text="LED"
+                        metric-label.style='{"color":"aqua"}'
+                        style="float:left;width:40px;height:40px;"></oj-led-gauge>
+        </td> 
+      </tr>
+    </table>
+  </body>
+
+  <script>
+    require(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojarraydataprovider',
+      'ojs/ojknockout', 'ojs/ojtable',
+      'ojs/ojgauge'], function(oj, ko, $) {
+      function ViewModel() {
+        this.lowValue = ko.observable(25);
+        this.midValue = ko.observable(50);
+        this.highValue = ko.observable(75);
+        this.thresholdValues = [{max: 33}, {max: 67}, {}];
+      }
+
+      var vm = new ViewModel();
+      ko.applyBindings(vm);
+    });
+  </script>
+</html>
+
