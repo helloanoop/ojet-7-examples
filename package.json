@@ -4,7 +4,7 @@
   "description": "Oracle JavaScript Extension Toolkit(JET) Starter Kit",
   "dependencies": {
     "@oracle/oraclejet": "~7.1.0",
-    "lodash": "^4.17.5"
+    "lodash": "^4.17.13"
   },
   "scripts": {
     "start": "./node_modules/.bin/http-server"
